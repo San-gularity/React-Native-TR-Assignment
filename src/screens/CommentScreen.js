@@ -1,16 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import CommentCard from '../components/CommentCard';
 
 const CommentScreen = () => {
   const route = useRoute();
-  const { comment } = route.params;
+  const { postId, comments } = route.params;
+  const filteredComments = comments.filter((comment) => comment.postId === postId);
+
+  const handleCommentPress = () => {
+    // Do nothing
+  };
+
+  const renderCommentCard = ({ item }) => (
+    <CommentCard comment={item} onPress={handleCommentPress} isCommentScreen={true} />
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.commentName}>{comment.name}</Text>
-      <Text style={styles.commentEmail}>{comment.email}</Text>
-    </View>
+    <FlatList
+      data={filteredComments}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={renderCommentCard}
+      style={styles.flatList}
+    />
+  </View>
   );
 };
 

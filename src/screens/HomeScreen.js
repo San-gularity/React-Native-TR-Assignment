@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCommentsSuccess, fetchCommentsFailure } from '../commentSlice';
+import CommentCard from '../components/CommentCard';
 // import { connect } from 'react-redux';
 // import { fetchComments } from '../redux/actions/commentAsyncActions';
 
@@ -33,18 +34,13 @@ useEffect(() => {
   fetchComments();
 }, []);
 
-  const handleCommentPress = (item) => {
+  const handleCommentPress = (postId) => {
     // Navigate to a different screen with the selected comment
-    navigation.navigate('CommentScreen', { comment: item });
+    navigation.navigate('CommentScreen', { postId, comments });
   };
 
   const renderCommentCard = ({ item }) => (
-    <TouchableOpacity onPress={() => handleCommentPress(item)}>
-      <View style={styles.commentCard}>
-        <Text style={styles.commentName}>{item.name}</Text>
-        <Text style={styles.commentEmail}>{item.email}</Text>
-      </View>
-    </TouchableOpacity>
+    <CommentCard comment={item} onPress={handleCommentPress} isCommentScreen={false} />
   );
 
   return (
@@ -62,11 +58,11 @@ useEffect(() => {
 
 const styles = StyleSheet.create({
   commentCard: {
-    backgroundColor: '#222', // Dark background color
+    backgroundColor: '#fff', // Dark background color
     padding: 16,
     marginBottom: 10,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: '#222',
     shadowOffset: {
       width: 0,
       height: 2,
